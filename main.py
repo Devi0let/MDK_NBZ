@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from skfuzzy import control as ctrl
 import numpy as np
 import skfuzzy as fuzz
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -15,6 +15,10 @@ def work():
     ma1 = float(max1.get())
     ma2 = float(max2.get())
     ma3 = float(max3.get())
+
+    tk.Label(text=f'Если {call1.get()} много или {call2.get()} достаточно, то {call3.get()} мало').pack()
+    tk.Label(text=f'Если {call1.get()} мало или {call2.get()} много, то {call3.get()} много').pack()
+    tk.Label(text=f'Если {call1.get()} достаточно или {call2.get()} мало, то {call3.get()} мало').pack()
 
     diag1(m1, m2, m3, ma1, ma2, ma3)
 
@@ -51,11 +55,12 @@ def diag1(m1, m2, m3, ma1, ma2, ma3):
 
 
 def canv(x1, x2, x3, grph1, grph2, grph3, grph4, grph5, grph6, grph7, grph8, grph9):
+    global Framecanv
     cl1 = call1.get()
     cl2 = call2.get()
     cl3 = call3.get()
 
-    Framecanv = tk.Frame()
+    Framecanv = tk.Frame(root)
 
     tk.Label(Framecanv, text=cl1).grid(row=0, column=0)
 
@@ -92,12 +97,11 @@ def canv(x1, x2, x3, grph1, grph2, grph3, grph4, grph5, grph6, grph7, grph8, grp
 
     tk.Label(Framecanv, text=cl3).grid(row=0, column=2)
 
-    Framecanv.pack()
-
     canv2()
 
 
 def canv2():
+    global per_1, per_2, per_3
     per_1 = float(e1.get())
     per_2 = float(e2.get())
     per_3 = float(e3.get())
@@ -105,8 +109,6 @@ def canv2():
     sr1 = ((ma1 - m1) / 2)
     sr2 = ((ma2 - m2) / 2)
     sr3 = ((ma3 - m3) / 2)
-
-    Framecanv2 = tk.Frame()
 
     if per_1 < m1 + sr1:
         graphic_1 = Figure(figsize=(2.6, 2.6))
@@ -121,8 +123,8 @@ def canv2():
         gr_1.set_ylim(0.001, 1.1)
         gr_1.set_xlim(m1 + 0.001, ma1 + 0.1)
         gr_1.grid()
-        canvas = FigureCanvasTkAgg(graphic_1, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=0)
+        canvas = FigureCanvasTkAgg(graphic_1, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=0)
         canvas.draw()
     elif per_1 > m1 + sr1:
         graphic_1 = Figure(figsize=(2.6, 2.6))
@@ -137,8 +139,8 @@ def canv2():
         gr_1.set_ylim(0.001, 1.1)
         gr_1.set_xlim(m1 + 0.001, ma1 + 0.1)
         gr_1.grid()
-        canvas = FigureCanvasTkAgg(graphic_1, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=0)
+        canvas = FigureCanvasTkAgg(graphic_1, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=0)
         canvas.draw()
     else:
         graphic_1 = Figure(figsize=(2.6, 2.6))
@@ -153,8 +155,8 @@ def canv2():
         gr_1.set_ylim(0.001, 1.1)
         gr_1.set_xlim(m1 + 0.001, ma1 + 0.1)
         gr_1.grid()
-        canvas = FigureCanvasTkAgg(graphic_1, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=0)
+        canvas = FigureCanvasTkAgg(graphic_1, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=0)
         canvas.draw()
 
     if per_2 < m2 + sr2:
@@ -170,8 +172,8 @@ def canv2():
         gr_2.set_ylim(0.001, 1.1)
         gr_2.set_xlim(m2 + 0.001, ma2 + 0.1)
         gr_2.grid()
-        canvas = FigureCanvasTkAgg(graphic_2, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=1)
+        canvas = FigureCanvasTkAgg(graphic_2, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=1)
         canvas.draw()
     elif per_2 > m2 + sr2:
         graphic_2 = Figure(figsize=(2.6, 2.6))
@@ -186,8 +188,8 @@ def canv2():
         gr_2.set_ylim(0.001, 1.1)
         gr_2.set_xlim(m2 + 0.001, ma2 + 0.1)
         gr_2.grid()
-        canvas = FigureCanvasTkAgg(graphic_2, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=1)
+        canvas = FigureCanvasTkAgg(graphic_2, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=1)
         canvas.draw()
     else:
         graphic_2 = Figure(figsize=(2.6, 2.6))
@@ -202,8 +204,8 @@ def canv2():
         gr_2.set_ylim(0.001, 1.1)
         gr_2.set_xlim(m2 + 0.001, ma2 + 0.1)
         gr_2.grid()
-        canvas = FigureCanvasTkAgg(graphic_2, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=1)
+        canvas = FigureCanvasTkAgg(graphic_2, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=1)
         canvas.draw()
 
     if per_3 < m3 + sr3:
@@ -219,8 +221,8 @@ def canv2():
         gr_3.set_ylim(0.001, 1.1)
         gr_3.set_xlim(m3 + 0.001, ma3 + 0.1)
         gr_3.grid()
-        canvas = FigureCanvasTkAgg(graphic_3, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=2)
+        canvas = FigureCanvasTkAgg(graphic_3, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=2)
         canvas.draw()
     elif per_3 > m3 + sr3:
         graphic_3 = Figure(figsize=(2.6, 2.6))
@@ -235,8 +237,8 @@ def canv2():
         gr_3.set_ylim(0.001, 1.1)
         gr_3.set_xlim(m3 + 0.001, ma3 + 0.1)
         gr_3.grid()
-        canvas = FigureCanvasTkAgg(graphic_3, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=2)
+        canvas = FigureCanvasTkAgg(graphic_3, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=2)
         canvas.draw()
     else:
         graphic_3 = Figure(figsize=(2.6, 2.6))
@@ -251,19 +253,100 @@ def canv2():
         gr_3.set_ylim(0.001, 1.1)
         gr_3.set_xlim(m3 + 0.001, ma3 + 0.1)
         gr_3.grid()
-        canvas = FigureCanvasTkAgg(graphic_3, master=Framecanv2)
-        canvas.get_tk_widget().grid(row=0, column=2)
+        canvas = FigureCanvasTkAgg(graphic_3, master=Framecanv)
+        canvas.get_tk_widget().grid(row=2, column=2)
         canvas.draw()
 
-    Framecanv2.pack()
+    graphic_1z = Figure(figsize=(2.6, 2.6))
+    gr_1z = graphic_1z.add_subplot(111)
+    xg3z = [(m1 + opp10 * 7), (m1 + opp10 * 8), ma1, ma1]
+    yg3z = [0, 0.2, 0.2, 0]
+    gr_1z.plot(xg3z, yg3z)
+    gr_1z.set_ylim(0.001, 1.1)
+    gr_1z.grid()
+    canvas = FigureCanvasTkAgg(graphic_1z, master=Framecanv)
+    canvas.get_tk_widget().grid(row=1, column=3)
+    canvas.draw()
 
+    graphic_2z = Figure(figsize=(2.6, 2.6))
+    gr_2z = graphic_2z.add_subplot(111)
+    xg_2z = [m2, m2, (m2 + opp10_2 * 2), (m2 + opp10_2 * 3)]
+    yg_2z = [0, 0.9, 0.9, 0]
+    gr_2z.plot(xg_2z, yg_2z)
+    gr_2z.set_ylim(0.001, 1.1)
+    gr_2z.grid()
+    canvas = FigureCanvasTkAgg(graphic_2z, master=Framecanv)
+    canvas.get_tk_widget().grid(row=1, column=4)
+    canvas.draw()
+
+    graphic_2z = Figure(figsize=(2.6, 2.6))
+    gr_2z = graphic_2z.add_subplot(111)
+    xg2_3z = [(m3 + opp10_3 * 2), (m3 + opp_3), (m3 + opp_3 * 2), (m3 + opp10_3 * 8)]
+    yg2_3z = [0, 0.6, 0.6, 0]
+    gr_2z.plot(xg2_3z, yg2_3z)
+    gr_2z.set_ylim(0.001, 1.1)
+    gr_2z.grid()
+    canvas = FigureCanvasTkAgg(graphic_2z, master=Framecanv)
+    canvas.get_tk_widget().grid(row=1, column=5)
+    canvas.draw()
+
+    graphic_2zz = Figure(figsize=(2.6, 2.6))
+    gr_2zz = graphic_2zz.add_subplot(111)
+    gr_2zz.plot(xg3z, yg3z, xg_2z, yg_2z, xg2_3z, yg2_3z)
+    gr_2zz.grid()
+    canvas = FigureCanvasTkAgg(graphic_2zz, master=Framecanv)
+    canvas.get_tk_widget().grid(row=2, column=4)
+    canvas.draw()
+
+    Framecanv.pack()
+
+    x1 = ctrl.Antecedent(np.arange(m1, ma1, 0.1), 'x1')
+    x2 = ctrl.Antecedent(np.arange(m2, ma2, 0.1), 'x2')
+    x3 = ctrl.Antecedent(np.arange(m3, ma3, 0.1), 'x3')
+
+    Vivod = ctrl.Consequent(np.arange(m1, ma1, 0.1), 'Vivod')
+
+    x1.automf(3)
+    x2.automf(3)
+    x3.automf(3)
+
+    x1['poor'] = fuzz.trapmf(x1.universe, [m1, m1, (m1 + opp10 * 2), (m1 + opp10 * 3)])
+    x1['average'] = fuzz.trapmf(x1.universe, [(m1 + opp10 * 2), (m1 + opp), (m1 + opp * 2), (m1 + opp10 * 8)])
+    x1['good'] = fuzz.trapmf(x1.universe, [(m1 + opp10 * 7), (m1 + opp10 * 8), ma1, ma1])
+
+    x2['poor'] = fuzz.trapmf(x2.universe, [m2, m2, (m2 + opp10_2 * 2), (m2 + opp10_2 * 3)])
+    x2['average'] = fuzz.trapmf(x2.universe, [(m2 + opp10_2 * 2), (m2 + opp_2), (m2 + opp_2 * 2), (m2 + opp10_2 * 8)])
+    x2['good'] = fuzz.trapmf(x2.universe, [(m2 + opp10_2 * 7), (m2 + opp10_2 * 8), ma2, ma2])
+
+    x3['poor'] = fuzz.trapmf(x3.universe, [m3, m3, (m3 + opp10_3 * 2), (m3 + opp10_3 * 3)])
+    x3['average'] = fuzz.trapmf(x3.universe, [(m3 + opp10_3 * 2), (m3 + opp_3), (m3 + opp_3 * 2), (m3 + opp10_3 * 8)])
+    x3['good'] = fuzz.trapmf(x3.universe, [(m3 + opp10_3 * 7), (m3 + opp10_3 * 8), ma3, ma3])
+
+    Vivod['Not_buy'] = fuzz.trapmf(Vivod.universe, [m1, m1, (m1 + opp10 * 2), (m1 + opp10 * 3)])
+    Vivod['think_out_buy'] = fuzz.trapmf(Vivod.universe, [(m1 + opp10 * 2), (m1 + opp), (m1 + opp * 2), (m1 + opp10 * 8)])
+    Vivod['buy'] = fuzz.trapmf(Vivod.universe, [(m1 + opp10 * 7), (m1 + opp10 * 8), ma1, ma1])
+
+    rule1 = ctrl.Rule(x1['good'] | x2['average'] & x3['poor'], Vivod['Not_buy'])
+    rule2 = ctrl.Rule(x1['poor'] | x2['good'] & x3['good'], Vivod['buy'])
+    rule3 = ctrl.Rule(x1['average'] | x2['poor'] & x3['poor'], Vivod['think_out_buy'])
+
+    x_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
+    # x_ctrl.view()
+
+    xx = ctrl.ControlSystemSimulation(x_ctrl)
+    xx.input['x1'] = per_1
+    xx.input['x2'] = per_2
+    xx.input['x3'] = per_3
+
+    xx.compute()
+
+    tk.Label(text=f'Ответ:{xx.output["Vivod"]}', height=22 ).pack()
 
 root = tk.Tk()
-root.geometry('1400x800')
 root.title('Made by Devi0let')
-root.resizable(False, False)
+root.geometry('1920x1080')
 
-Frame = tk.Frame()
+Frame = tk.Frame(root)
 
 tk.Label(root, text='Вычисление нечёткой базы (Предпологается использование схемы "Мало, Достаточно, Много")').pack()
 tk.Label(Frame, text='Первая переменная: ').grid(row=1, column=0)
@@ -305,7 +388,10 @@ max3.grid(row=3, column=2)
 Frame.pack()
 Frame2.pack()
 
-tk.Label(text='').pack()
-tk.Button(root, text='Вычислить', command=work).pack()
+tk.Label(text='\n').pack()
+
+tk.Button(root, text='\nВычислить\n', command=work).pack()
+
+
 
 root.mainloop()
