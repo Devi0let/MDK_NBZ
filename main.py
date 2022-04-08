@@ -257,12 +257,16 @@ def canv2():
         canvas.get_tk_widget().grid(row=2, column=2)
         canvas.draw()
 
+    tk.Label(Framecanv, text='Правило 1').grid(row=0,column=3)
+    tk.Label(Framecanv, text='Правило 2').grid(row=0, column=4)
+    tk.Label(Framecanv, text='Правило 3').grid(row=0, column=5)
+
     graphic_1z = Figure(figsize=(2.6, 2.6))
     gr_1z = graphic_1z.add_subplot(111)
     xg3z = [(m1 + opp10 * 7), (m1 + opp10 * 8), ma1, ma1]
     yg3z = [0, 0.2, 0.2, 0]
     gr_1z.plot(xg3z, yg3z)
-    gr_1z.set_ylim(0.001, 1.1)
+    #gr_1z.set_ylim(0.001, 1.1)
     gr_1z.grid()
     canvas = FigureCanvasTkAgg(graphic_1z, master=Framecanv)
     canvas.get_tk_widget().grid(row=1, column=3)
@@ -273,7 +277,7 @@ def canv2():
     xg_2z = [m2, m2, (m2 + opp10_2 * 2), (m2 + opp10_2 * 3)]
     yg_2z = [0, 0.9, 0.9, 0]
     gr_2z.plot(xg_2z, yg_2z)
-    gr_2z.set_ylim(0.001, 1.1)
+    #gr_2z.set_ylim(0.001, 1.1)
     gr_2z.grid()
     canvas = FigureCanvasTkAgg(graphic_2z, master=Framecanv)
     canvas.get_tk_widget().grid(row=1, column=4)
@@ -284,7 +288,7 @@ def canv2():
     xg2_3z = [(m3 + opp10_3 * 2), (m3 + opp_3), (m3 + opp_3 * 2), (m3 + opp10_3 * 8)]
     yg2_3z = [0, 0.6, 0.6, 0]
     gr_2z.plot(xg2_3z, yg2_3z)
-    gr_2z.set_ylim(0.001, 1.1)
+    #gr_2z.set_ylim(0.001, 1.1)
     gr_2z.grid()
     canvas = FigureCanvasTkAgg(graphic_2z, master=Framecanv)
     canvas.get_tk_widget().grid(row=1, column=5)
