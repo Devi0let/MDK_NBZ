@@ -104,11 +104,46 @@ def canv2():
     global per_1, per_2, per_3
     per_1 = float(e1.get())
     per_2 = float(e2.get())
-    per_3 = float(e3.get())
+
 
     sr1 = ((ma1 - m1) / 2)
     sr2 = ((ma2 - m2) / 2)
     sr3 = ((ma3 - m3) / 2)
+
+
+    x1 = ctrl.Antecedent(np.arange(m1, ma1, 0.1), 'x1')
+    x2 = ctrl.Antecedent(np.arange(m2, ma2, 0.1), 'x2')
+    x3 = ctrl.Consequent(np.arange(m3, ma3, 0.1), 'x3')
+
+    x1.automf(3)
+    x2.automf(3)
+
+    x1['poor'] = fuzz.trapmf(x1.universe, [m1, m1, (m1 + opp10 * 2), (m1 + opp10 * 3)])
+    x1['average'] = fuzz.trapmf(x1.universe, [(m1 + opp10 * 2), (m1 + opp), (m1 + opp * 2), (m1 + opp10 * 8)])
+    x1['good'] = fuzz.trapmf(x1.universe, [(m1 + opp10 * 7), (m1 + opp10 * 8), ma1, ma1])
+
+    x2['poor'] = fuzz.trapmf(x2.universe, [m2, m2, (m2 + opp10_2 * 2), (m2 + opp10_2 * 3)])
+    x2['average'] = fuzz.trapmf(x2.universe, [(m2 + opp10_2 * 2), (m2 + opp_2), (m2 + opp_2 * 2), (m2 + opp10_2 * 8)])
+    x2['good'] = fuzz.trapmf(x2.universe, [(m2 + opp10_2 * 7), (m2 + opp10_2 * 8), ma2, ma2])
+
+    x3['poor'] = fuzz.trapmf(x3.universe, [m3, m3, (m3 + opp10_3 * 2), (m3 + opp10_3 * 3)])
+    x3['average'] = fuzz.trapmf(x3.universe, [(m3 + opp10_3 * 2), (m3 + opp_3), (m3 + opp_3 * 2), (m3 + opp10_3 * 8)])
+    x3['good'] = fuzz.trapmf(x3.universe, [(m3 + opp10_3 * 7), (m3 + opp10_3 * 8), ma3, ma3])
+
+    rule1 = ctrl.Rule(x1['good'] | x2['average'], x3['poor'])
+    rule2 = ctrl.Rule(x1['poor'] | x2['good'], x3['good'])
+    rule3 = ctrl.Rule(x1['average'] | x2['poor'], x3['average'])
+
+    x_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
+    # x_ctrl.view()
+
+    xx = ctrl.ControlSystemSimulation(x_ctrl)
+    xx.input['x1'] = per_1
+    xx.input['x2'] = per_2
+
+    xx.compute()
+
+    per_3 = xx.output["x3"]
 
     if per_1 < m1 + sr1:
         graphic_1 = Figure(figsize=(2.6, 2.6))
@@ -304,47 +339,8 @@ def canv2():
 
     Framecanv.pack()
 
-    x1 = ctrl.Antecedent(np.arange(m1, ma1, 0.1), 'x1')
-    x2 = ctrl.Antecedent(np.arange(m2, ma2, 0.1), 'x2')
-    x3 = ctrl.Antecedent(np.arange(m3, ma3, 0.1), 'x3')
 
-    Vivod = ctrl.Consequent(np.arange(m1, ma1, 0.1), 'Vivod')
-
-    x1.automf(3)
-    x2.automf(3)
-    x3.automf(3)
-
-    x1['poor'] = fuzz.trapmf(x1.universe, [m1, m1, (m1 + opp10 * 2), (m1 + opp10 * 3)])
-    x1['average'] = fuzz.trapmf(x1.universe, [(m1 + opp10 * 2), (m1 + opp), (m1 + opp * 2), (m1 + opp10 * 8)])
-    x1['good'] = fuzz.trapmf(x1.universe, [(m1 + opp10 * 7), (m1 + opp10 * 8), ma1, ma1])
-
-    x2['poor'] = fuzz.trapmf(x2.universe, [m2, m2, (m2 + opp10_2 * 2), (m2 + opp10_2 * 3)])
-    x2['average'] = fuzz.trapmf(x2.universe, [(m2 + opp10_2 * 2), (m2 + opp_2), (m2 + opp_2 * 2), (m2 + opp10_2 * 8)])
-    x2['good'] = fuzz.trapmf(x2.universe, [(m2 + opp10_2 * 7), (m2 + opp10_2 * 8), ma2, ma2])
-
-    x3['poor'] = fuzz.trapmf(x3.universe, [m3, m3, (m3 + opp10_3 * 2), (m3 + opp10_3 * 3)])
-    x3['average'] = fuzz.trapmf(x3.universe, [(m3 + opp10_3 * 2), (m3 + opp_3), (m3 + opp_3 * 2), (m3 + opp10_3 * 8)])
-    x3['good'] = fuzz.trapmf(x3.universe, [(m3 + opp10_3 * 7), (m3 + opp10_3 * 8), ma3, ma3])
-
-    Vivod['Not_buy'] = fuzz.trapmf(Vivod.universe, [m1, m1, (m1 + opp10 * 2), (m1 + opp10 * 3)])
-    Vivod['think_out_buy'] = fuzz.trapmf(Vivod.universe, [(m1 + opp10 * 2), (m1 + opp), (m1 + opp * 2), (m1 + opp10 * 8)])
-    Vivod['buy'] = fuzz.trapmf(Vivod.universe, [(m1 + opp10 * 7), (m1 + opp10 * 8), ma1, ma1])
-
-    rule1 = ctrl.Rule(x1['good'] | x2['average'] & x3['poor'], Vivod['Not_buy'])
-    rule2 = ctrl.Rule(x1['poor'] | x2['good'] & x3['good'], Vivod['buy'])
-    rule3 = ctrl.Rule(x1['average'] | x2['poor'] & x3['poor'], Vivod['think_out_buy'])
-
-    x_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
-    # x_ctrl.view()
-
-    xx = ctrl.ControlSystemSimulation(x_ctrl)
-    xx.input['x1'] = per_1
-    xx.input['x2'] = per_2
-    xx.input['x3'] = per_3
-
-    xx.compute()
-
-    tk.Label(text=f'Ответ:{xx.output["Vivod"]}', height=22 ).pack()
+    tk.Label(text=f'Ответ:{xx.output["x3"]}', height=22 ).pack()
 
 root = tk.Tk()
 root.title('Made by Devi0let')
@@ -355,13 +351,11 @@ Frame = tk.Frame(root)
 tk.Label(root, text='Вычисление нечёткой базы (Предпологается использование схемы "Мало, Достаточно, Много")').pack()
 tk.Label(Frame, text='Первая переменная: ').grid(row=1, column=0)
 tk.Label(Frame, text='Вторая переменная: ').grid(row=1, column=2)
-tk.Label(Frame, text='Третья переменная: ').grid(row=1, column=4)
+
 e1 = tk.Entry(Frame, width=4)
 e2 = tk.Entry(Frame, width=4)
-e3 = tk.Entry(Frame, width=4)
 e1.grid(row=1, column=1)
 e2.grid(row=1, column=3)
-e3.grid(row=1, column=5)
 tk.Label(Frame, text='                         ').grid(row=1, column=6)
 
 tk.Label(Frame, text='').grid(row=2)
